@@ -7,7 +7,7 @@ export const transporter = nodemailer.createTransport({service: "gmail", auth: {
 },
 });
 
-export const sendVerificationEmail = async (to: string, otp: string): Promise<ApiResponse> => {
+export const sendVerificationEmail = async (to: string, verifyCode: string): Promise<ApiResponse> => {
     try {
         const mailOptions = {
             from: `"GhostMessage" <${process.env.EMAIL_USER}>`,
@@ -16,7 +16,7 @@ export const sendVerificationEmail = async (to: string, otp: string): Promise<Ap
             html: `
             <div>
                 <p>Hello,</p>
-                <p>Your verification code is: <strong>${otp}</strong></p>
+                <p>Your verification code is: <strong>${verifyCode}</strong></p>
                 <p>This code will expire in 10 minutes.</p>
             </div>
             `,

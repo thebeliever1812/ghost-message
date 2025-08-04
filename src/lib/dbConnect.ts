@@ -4,7 +4,10 @@ import { exit } from "process";
 let isConnected = false;
 
 async function connectMongoDb(): Promise<void> {
-	if (isConnected) return;
+	if (isConnected) {
+		console.log("MongoDb already connected");
+		return;
+	}
 
 	try {
 		const connection = await mongoose.connect(
