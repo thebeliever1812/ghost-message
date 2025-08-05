@@ -20,25 +20,22 @@ export async function POST(request: Request) {
 
 		const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
 		const verifyCodeExpiry = new Date();
-		verifyCodeExpiry.setHours(verifyCodeExpiry.getMinutes() + 10);
+		verifyCodeExpiry.setMinutes(verifyCodeExpiry.getMinutes() + 10);
 
 		const user = await UserModel.findOne({ email, username });
 		if (user) {
 			// User already Exist
 			if (user.isVerified) {
-				return NextResponse.redirect(new URL("/login", request.url));
-            }
-            const hashedPassword = await hash(password, 10);
-			await user.updateOne({
-				$set: {
-					username,
-					email,
-					password: hashedPassword,
-					verifyCode,
-					verifyCodeExpiry,
-				},
-				$currentDate: { updatedAt: true },
-			});
+				return NextResponse.redirect(new URL("/signin", request.url));
+			}
+			const hashedPassword = await hash(password, 10);
+
+			user.username = username;
+			user.email = email;
+			user.password = hashedPassword;
+			user.verifyCode = verifyCode;
+			user.verifyCodeExpiry = verifyCodeExpiry;
+			await user.save();
 		} else {
 			const hashedPassword = await hash(password, 10);
 

@@ -13,10 +13,7 @@ export async function middleware(request: NextRequest) {
 		const isAuthPage = authPages.includes(pathname);
 
 		// Redirect unauthenticated user trying to access protected page
-		if (
-			!token &&
-			(pathname.startsWith("/dashboard") || pathname.startsWith("/verify"))
-		) {
+		if (!token && pathname.startsWith("/dashboard")) {
 			return NextResponse.redirect(new URL("/sign-in", request.url));
 		}
 

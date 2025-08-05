@@ -13,8 +13,7 @@ export async function GET(request: NextRequest) {
 		const searchParams = request.nextUrl.searchParams;
 		const queryParam = searchParams.get("username");
 		// Validate with zod
-		const result = UsernameQuerySchema.safeParse({ queryParam });
-		console.log(result);
+		const result = UsernameQuerySchema.safeParse({ username: queryParam });
 		if (!result.success) {
 			return Response.json(
 				{
@@ -25,11 +24,29 @@ export async function GET(request: NextRequest) {
 			);
 		}
 
-		const {username} = result.data
+		const { username } = result.data;
+
+		await connectMongoDb();
+
+		const existingUser = await UserModel.findOne({
+			username,
+			isVerified: true,
+		});
+
+		if (existingUser) {
+			return Response.json(
+				{
+					success: false,
+					message: "Username not available",
+				},
+				{ status: 300 }
+			);
+		}
+
 		return Response.json(
 			{
-				sucess: true,
-				message: "Valid username",
+				success: true,
+				message: "Username available",
 			},
 			{ status: 200 }
 		);
