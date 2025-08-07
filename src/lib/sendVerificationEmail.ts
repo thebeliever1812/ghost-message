@@ -25,8 +25,9 @@ export const sendVerificationEmail = async (to: string, verifyCode: string): Pro
         await transporter.sendMail(mailOptions);
     
         return {
-            success: true,  message: "Verification email sent successfully.",
-        };
+					success: true,
+					message: "Almost there! Verify your email to complete signup.",
+				};
 	} catch (error) {
 		console.log('Error sending verification email:', error)
         return {

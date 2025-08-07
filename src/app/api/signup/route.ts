@@ -37,6 +37,30 @@ export async function POST(request: Request) {
 			user.verifyCodeExpiry = verifyCodeExpiry;
 			await user.save();
 		} else {
+			const existingEmail = await UserModel.findOne({ email });
+			if (existingEmail) {
+				return Response.json(
+					{
+						success: false,
+						message:
+							"Email already exists. Please sign in or use another email.",
+					},
+					{ status: 400 }
+				);
+			}
+
+			const existingUsername = await UserModel.findOne({ email });
+			if (existingUsername) {
+				return Response.json(
+					{
+						success: false,
+						message:
+							"Username already exists. Please sign in or use another username",
+					},
+					{ status: 400 }
+				);
+			}
+
 			const hashedPassword = await hash(password, 10);
 
 			await UserModel.create({
@@ -63,7 +87,7 @@ export async function POST(request: Request) {
 			{ success: true, message: result.message },
 			{ status: 200 }
 		);
-	} catch (error) {
+	} catch (error: any) {
 		return Response.json(
 			{
 				success: false,
