@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
 					}
 
 					if (!user.isVerified) {
-						throw new Error("Please verify your account");
+						throw new Error("Email not verified Signup again");
 					}
 
 					const isPasswordMatch = await bcrypt.compare(
@@ -44,7 +44,7 @@ export const authOptions: NextAuthOptions = {
 
 					return user;
 				} catch (error: any) {
-					throw new Error(error);
+					throw new Error(error.message);
 				}
 			},
 		}),
