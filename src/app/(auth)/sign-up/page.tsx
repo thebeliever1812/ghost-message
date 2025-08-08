@@ -21,6 +21,8 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Loader2 } from "lucide-react"
+import Link from "next/link"
 
 const Signup = () => {
     const [username, setUsername] = useState('')
@@ -107,7 +109,7 @@ const Signup = () => {
                                         <FormDescription>
                                             {isCheckingUsername
                                                 ? "Checking availability..."
-                                                : usernameMessage && (
+                                                : (
                                                     <span
                                                         className={
                                                             usernameMessage.includes("Username available")
@@ -149,13 +151,17 @@ const Signup = () => {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" disabled={isSubmitting} >
-                                {
-                                    isSubmitting ? 'Signing up' : 'Sign up'
-                                }
-                            </Button>
+                            <div className="flex w-full justify-center">
+                                <Button type="submit" disabled={isSubmitting} >
+                                    {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                    {isSubmitting ? "Please wait" : "Sign up"}
+                                </Button>
+                            </div>
                         </form>
                     </Form>
+                    <div className="w-full flex justify-center gap-3 mt-3">
+                        <p>Already a user?</p><Link href={'/sign-in'} className="text-blue-500">Sign in</Link>
+                    </div>
                 </div>
             </div>
         </Container>

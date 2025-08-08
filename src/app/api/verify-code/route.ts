@@ -1,6 +1,7 @@
 import connectMongoDb from "@/lib/dbConnect";
 import UserModel from "@/models/User";
 import { verifySchema } from "@/schemas/verifySchema";
+import { useParams } from "next/navigation";
 
 export async function POST(request: Request) {
 	try {
