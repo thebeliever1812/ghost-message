@@ -61,10 +61,11 @@ const Signin = () => {
     }
   }
   return (
-    <Container>
+    <Container className="flex justify-center items-center">
       <div className="w-full">
-        <h2 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl w-full text-center mt-16">Welcome! Login to Ghost Message</h2>
-        <div className="sign-up-form w-full max-w-xl mx-auto mt-8 md:mt-10 p-3 lg:p-5  rounded-sm shadow-[0_0_10px_0_#ccc]">
+        <h2 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl w-full text-center font-bold">Welcome! Login to Ghost Message</h2>
+        <p className="text-center mt-2 font-bold">Send Messages, Stay Invisible</p>
+        <div className="sign-up-form w-full max-w-xl mx-auto mt-6 md:mt-10 p-3 lg:p-5  rounded-sm shadow-[0_0_10px_0_#ccc]">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
               <FormField

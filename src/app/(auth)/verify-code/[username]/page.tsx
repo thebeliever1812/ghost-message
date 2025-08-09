@@ -58,9 +58,9 @@ export default function VerifyCode() {
     }
 
     return (
-        <Container>
+        <Container className="flex justify-center items-center">
             <div className="w-full">
-                <h2 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl w-full text-center mt-16">Verify your Ghost Message Account</h2>
+                <h2 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl w-full text-center">Verify your Ghost Message Account</h2>
                 <div className="w-full max-w-xl mx-auto mt-8 md:mt-10 p-3 lg:p-5  rounded-sm shadow-[0_0_10px_0_#ccc] flex justify-center">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">

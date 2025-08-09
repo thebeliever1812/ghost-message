@@ -8,9 +8,9 @@ export async function middleware(request: NextRequest) {
 		const token = await getToken({ req: request });
 		const pathname = request.nextUrl.pathname;
 
-		const authPages = ["/sign-in", "/sign-up"];
+		const authPages = ["/sign-in", "/sign-up", "/verify-code"];
 
-		const isAuthPage = authPages.includes(pathname);
+		const isAuthPage = authPages.some(page => pathname.startsWith(page))
 
 		// Redirect unauthenticated user trying to access protected page
 		if (!token && pathname.startsWith("/dashboard")) {
@@ -31,5 +31,5 @@ export async function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-	matcher: ["/sign-in", "/sign-up", "/", "/dashboard/:path*", "/verify/:path*"],
+	matcher: ["/sign-in", "/sign-up", "/", "/dashboard/:path*", "/verify-code/:path*"],
 };

@@ -1,4 +1,4 @@
-import { NextAuthOptions } from "next-auth";
+import { NextAuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import connectMongoDb from "@/lib/dbConnect";
@@ -14,6 +14,10 @@ export const authOptions: NextAuthOptions = {
 				password: { label: "Password", type: "password" },
 			},
 			async authorize(credentials: any): Promise<any> {
+				if (!credentials) {
+					throw new Error("Missing credentials");
+				}
+
 				// Connect db
 				await connectMongoDb();
 
@@ -42,7 +46,12 @@ export const authOptions: NextAuthOptions = {
 						throw new Error("Incorrect Password");
 					}
 
-					return user;
+					return {
+						_id: String(user._id), // keep for your own use
+						username: user.username,
+						isVerified: user.isVerified,
+						isAcceptingMessages: user.isAcceptingMessage,
+					};
 				} catch (error: any) {
 					throw new Error(error.message);
 				}
@@ -53,15 +62,16 @@ export const authOptions: NextAuthOptions = {
 		async jwt({ token, user }) {
 			if (user) {
 				token._id = user._id;
-				token.isVerified = user.isVerified;
 				token.username = user.username;
+				token.isVerified = user.isVerified;
 				token.isAcceptingMessages = user.isAcceptingMessages;
 			}
 			return token;
 		},
 		async session({ session, token }) {
-			if (token) {
+			if (session.user) {
 				session.user._id = token._id;
+				session.user.username = token.username;
 				session.user.isVerified = token.isVerified;
 				session.user.isAcceptingMessages = token.isAcceptingMessages;
 			}
@@ -73,6 +83,7 @@ export const authOptions: NextAuthOptions = {
 	},
 	session: {
 		strategy: "jwt",
+		maxAge: 24 * 60 * 60,
 	},
 	secret: process.env.NEXTAUTH_SECRET,
 };

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import AuthProvider from '@/context/AuthProvider'
 import { Toaster } from "@/components/ui/sonner"
 
@@ -25,9 +25,7 @@ export default function RootLayout({
         <body
           className={`${geistSans.className} antialiased`}
         >
-          <header></header>
           <main>{children}</main>
-          <footer></footer>
           <Toaster />
         </body>
       </AuthProvider>
