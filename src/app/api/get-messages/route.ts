@@ -20,18 +20,26 @@ export async function GET() {
 		}
 
 		await connectMongoDb();
-		console.log("here");
 
 		const userId = new mongoose.Types.ObjectId(sessionUser._id);
 
-		const user = await UserModel.aggregate([
+		const messages = await UserModel.aggregate([
 			{ $match: { _id: userId } },
 			{ $unwind: { path: "$messages", preserveNullAndEmptyArrays: true } }, // jab bhi ham mongodb ka internal parameter use krte hai we can directly add it in '$paramater_name'
+			{
+				$lookup: {
+					from: "messages", // collection name (lowercase & plural usually)
+					localField: "messages",
+					foreignField: "_id",
+					as: "messages",
+				},
+			},
+			{ $unwind: "$messages" },
 			{ $sort: { "messages.createdAt": -1 } },
 			{ $group: { _id: "$_id", messages: { $push: "$messages" } } },
 		]);
 
-		if (!user || user.length === 0) {
+		if (!messages || messages.length === 0) {
 			return Response.json(
 				{
 					success: false,
@@ -40,11 +48,11 @@ export async function GET() {
 				{ status: 404 }
 			);
 		}
-
+		
 		return Response.json(
 			{
 				success: true,
-				messages: user[0].messages,
+				messages: messages[0].messages,
 			},
 			{ status: 200 }
 		);

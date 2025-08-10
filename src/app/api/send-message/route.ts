@@ -1,11 +1,12 @@
 import connectMongoDb from "@/lib/dbConnect";
-import { Message } from "@/models/Message";
+import MessageModel, { Message } from "@/models/Message";
 import UserModel from "@/models/User";
 import { messageSchema } from "@/schemas/messageSchema";
 
 export async function POST(request: Request) {
 	try {
 		const { username, messageContent } = await request.json();
+
 		if (!username || !messageContent) {
 			return Response.json(
 				{
@@ -30,6 +31,7 @@ export async function POST(request: Request) {
 		}
 
 		const result = messageSchema.safeParse({ content: messageContent });
+		console.log(result)
 
 		if (!result.success) {
 			return Response.json({
@@ -39,9 +41,12 @@ export async function POST(request: Request) {
 		}
 
 		const { content } = result.data;
-		const newMessage = { content };
 
-		user.messages.push(newMessage as Message);
+		const newMessage = await MessageModel.create({
+			content
+		})
+
+		user.messages.push(newMessage._id as Message)
 		await user.save();
 
 		return Response.json(
@@ -52,6 +57,7 @@ export async function POST(request: Request) {
 			{ status: 200 }
 		);
 	} catch (error) {
+		console.log(error)
 		return Response.json(
 			{
 				success: false,

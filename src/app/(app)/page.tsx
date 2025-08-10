@@ -1,5 +1,6 @@
 'use client'
 import { Container } from "@/components";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import {
   Carousel,
@@ -15,9 +16,9 @@ export default function Home() {
 
   return (
     <Container className="flex flex-col items-center">
-      <section className="text-center mt-4">
-        <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-slate-900">Send Messages, Stay Invisible</h1>
-        <p className="mt-2 text-base lg:text-lg text-slate-600">
+      <section className="text-center mt-8">
+        <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-slate-900 ">Send Messages, Stay Invisible</h1>
+        <p className="mt-2 text-base lg:text-lg text-slate-600 leading-relaxed tracking-wide">
           Send and receive anonymous messages safely. No identity, no pressure — just pure honesty.
         </p>
       </section>
@@ -29,7 +30,7 @@ export default function Home() {
               <CarouselItem key={index}>
                 <div className="p-1">
                   <Card>
-                    <CardHeader className="font-semibold">
+                    <CardHeader className="font-semibold tracking-wide">
                       Message from Ghost
                     </CardHeader>
                     <CardContent className="flex min-h-56 md:min-h-72 items-center justify-center p-6">
@@ -46,6 +47,10 @@ export default function Home() {
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
+      </section>
+
+      <section className="mt-5 tracking-wide">
+        <Button variant={'default'}>Send Anonymous Message</Button>
       </section>
     </Container>
   );

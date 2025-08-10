@@ -36,7 +36,7 @@ const Dashboard = () => {
 
     const profileUrl = useMemo(() => {
         if (!baseUrl || !username) return ""
-        return `${baseUrl}/u/${username}`
+        return `${baseUrl}/ask/${username}`
     }, [baseUrl, username])
 
     const copyToClipboard = async () => {
@@ -119,12 +119,12 @@ const Dashboard = () => {
         <Container>
             <div>
                 <h2 className='text-xl font-bold md:text-3xl mt-3'>User Dashboard</h2>
-                <h3 className='font-semibold text-md mt-2'>My Link</h3>
+                <h3 className='font-semibold text-md mt-2 tracking-wide'>My Link</h3>
                 <div className="flex items-center w-full justify-between">
                     <input type='text' className="w-full break-all border border-slate-800 grow px-3 py-1.5 border-r-0 rounded-md rounded-r-none" value={profileUrl || "Profile URL not ready"} disabled />
                     <button
                         onClick={copyToClipboard}
-                        className="px-3 py-1.5 bg-slate-800 border border-slate-800 border-l-0 rounded-md rounded-l-none text-white cursor-pointer"
+                        className="px-3 py-1.5 bg-slate-800 border border-slate-800 border-l-0 rounded-md rounded-l-none text-white cursor-pointer tracking-wide"
                     >
                         Copy
                     </button>
@@ -138,11 +138,11 @@ const Dashboard = () => {
                             onCheckedChange={handleSwitchChange}
                             disabled={isSwitchLoading}
                         />
-                        <Label htmlFor="accept-message">Accept Messages</Label>
+                        <Label htmlFor="accept-message" className='tracking-wide'>Accept Messages</Label>
                     </div>
 
                     <button className='flex items-center gap-1' onClick={() => fetchMessages(true)}>
-                        <RefreshCw className={`${isLoading ? 'animate-spin' : ''} text-green-500`} /><span className='text-green-500'>Refresh Messages</span>
+                        <RefreshCw className={`${isLoading ? 'animate-spin' : ''} text-green-500`} /><span className='text-green-500 tracking-wide'>Refresh Messages</span>
                     </button>
                 </div>
 
@@ -152,7 +152,7 @@ const Dashboard = () => {
                     {
                         messages.length > 0 ?
                             (
-                                messages.map((message: any) =>
+                                messages.map((message: any,) =>
                                     <div key={message._id}>
                                         <MessageCard message={message} onMessageDelete={handleDeleteMessage} />
                                     </div>
@@ -160,7 +160,7 @@ const Dashboard = () => {
                             )
                             :
                             (
-                                <p className='text-xl font-semibold'>No messages found</p>
+                                <p className='text-xl font-semibold tracking-wide leading-relaxed'>No messages found</p>
                             )
                     }
                 </div>

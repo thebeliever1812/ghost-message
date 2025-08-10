@@ -14,15 +14,15 @@ const Navbar: React.FC = () => {
 
 
     return (
-        <nav className='w-full bg-zinc-700 px-3 lg:px-10 py-2 text-white flex justify-between items-center'>
+        <nav className='w-full bg-slate-950 px-3 lg:px-10 py-2 text-white flex justify-between items-center'>
             <Link href={'/'} className='flex justify-center items-center gap-0.5'>
                 <div className='ghost-message-logo w-10 aspect-square relative'>
                     <Image fill objectFit='' src={'/ghost_message_logo.png'} alt='ghost-message-logo' />
                 </div>
-                <span className='text-base md:text-xl font-bold '>Ghost Message</span>
+                <span className='text-base md:text-xl font-bold tracking-wider'>Ghost Message</span>
             </Link>
 
-            <div className='flex gap-1 md:gap-3'>
+            <div className='flex gap-1 md:gap-3 tracking-wide'>
                 {
                     status === 'authenticated' &&
                     <Link href={'/dashboard'}>
@@ -33,14 +33,14 @@ const Navbar: React.FC = () => {
                 }
                 {
                     status === 'authenticated' ?
-                        <Button onClick={() => {
+                        <Button variant={'secondary'} onClick={() => {
                             toast.success('Logout successful')
                             setTimeout(() => {
                                 signOut()
                             }, 500)
                         }}>Log out</Button>
                         :
-                        <Link href={'/sign-in'}><Button>Sign in</Button></Link>
+                        <Link href={'/sign-in'}><Button variant={'secondary'}>Sign in</Button></Link>
                 }
             </div>
         </nav>
