@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 		await connectMongoDb();
 
 		const userId = user._id;
-		const isUserAcceptingMessages = await request.json();
+		const { acceptMessages: isUserAcceptingMessages } = await request.json();
 
 		const result = acceptMessageSchema.safeParse({
 			acceptMessages: isUserAcceptingMessages,
@@ -34,6 +34,7 @@ export async function POST(request: Request) {
 			});
 		}
 
+		console.log("Result.data: ",result.data)
 		const { acceptMessages } = result.data;
 
 		const updatedUser = await UserModel.findByIdAndUpdate(
@@ -55,7 +56,7 @@ export async function POST(request: Request) {
 		return Response.json(
 			{
 				success: true,
-				message: "Changed status of accepting messages successfully",
+				message: "Changed status successfully",
 				updatedUser,
 			},
 			{ status: 200 }
@@ -71,7 +72,7 @@ export async function POST(request: Request) {
 	}
 }
 
-export async function GET(request: Request) {
+export async function GET() {
 	try {
 		const session = await getServerSession(authOptions);
 		const user = session?.user as User;
