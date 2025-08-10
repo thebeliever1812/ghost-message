@@ -1,17 +1,14 @@
 [
     {
-        "title": "hello",
-        "content": "This is my content",
+        "content": " What's a small moment that always makes you smile?",
         "recieved": "10 mins ago"
     },
     {
-        "title": "hello 2",
-        "content": "This is my content",
-        "recieved": "10 mins ago"
+        "content": "What's a place you've always dreamed of visiting, and why?",
+        "recieved": "1 hour ago"
     },
     {
-        "title": "hello 3",
-        "content": "This is my content",
-        "recieved": "10 mins ago"
+        "content": "What's a simple thing that makes you happy?",
+        "recieved": "3 hours ago"
     }
 ]
