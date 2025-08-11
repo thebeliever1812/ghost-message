@@ -1,17 +1,19 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { signOut, useSession } from 'next-auth/react'
-import { User } from 'next-auth'
 import { Button } from './ui/button'
-import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
+
 
 const Navbar: React.FC = () => {
-    const { data: session, status } = useSession()
-    const user = session?.user as User
+    const { status } = useSession()
 
+    const isUserSessionLoading = status === 'loading'
+
+    const router = useRouter()
 
     return (
         <nav className='w-full bg-slate-950 px-3 lg:px-10 py-2 text-white flex justify-between items-center'>
@@ -38,9 +40,10 @@ const Navbar: React.FC = () => {
                             setTimeout(() => {
                                 signOut()
                             }, 500)
+                            router.replace('/')
                         }}>Log out</Button>
                         :
-                        <Link href={'/sign-in'}><Button variant={'secondary'}>Sign in</Button></Link>
+                        <Link href={'/sign-in'}><Button variant={'secondary'} disabled={isUserSessionLoading}>Sign in</Button></Link>
                 }
             </div>
         </nav>

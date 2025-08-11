@@ -1,5 +1,6 @@
 "use client"
 import { Container, MessageCard } from '@/components'
+import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
@@ -8,7 +9,7 @@ import { acceptMessageSchema } from '@/schemas/acceptMessageSchema'
 import { ApiResponse } from '@/types/ApiResponse'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios, { AxiosError } from 'axios'
-import { RefreshCw } from 'lucide-react'
+import { Loader, RefreshCw } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -27,28 +28,16 @@ const Dashboard = () => {
     const { data: session, status } = useSession()
     const username = session?.user?.username ?? ""
 
-    // CHANGED: Build baseUrl only when window is available (client) and username exists.
-    // Using useMemo avoids recomputing on every render.
-    const baseUrl = useMemo(() => {
-        if (typeof window === "undefined") return ""
-        return `${window.location.protocol}//${window.location.host}`
-    }, [])
-
-    const profileUrl = useMemo(() => {
-        if (!baseUrl || !username) return ""
-        return `${baseUrl}/ask/${username}`
-    }, [baseUrl, username])
-
     const copyToClipboard = async () => {
-        if (!profileUrl) {
-            toast.error("Profile URL not available")
+        if (!username) {
+            toast.error("Username not available")
             return
         }
         try {
-            await navigator.clipboard.writeText(profileUrl)
-            toast.success("URL copied")
+            await navigator.clipboard.writeText(username)
+            toast.success("Username copied")
         } catch {
-            toast.error("Failed to copy URL")
+            toast.error("Failed to copy Username")
         }
     }
 
@@ -108,20 +97,29 @@ const Dashboard = () => {
     }
 
     if (status === "loading") {
-        return <div>Loading...</div>
+        return (
+            <Container>
+                <Loader className='animate-spin text-center w-full mt-10' />
+            </Container>
+        )
     }
 
     if (!session?.user) {
-        return <div>You must be logged in</div>
+        return <Container className='flex gap-3 justify-center items-center'>
+            <div className='w-full mt-10'>You must be log in</div>
+            <Button variant={'link'}>
+                Sign in
+            </Button>
+        </Container>
     }
 
     return (
         <Container>
             <div>
-                <h2 className='text-xl font-bold md:text-3xl mt-3'>User Dashboard</h2>
-                <h3 className='font-semibold text-md mt-2 tracking-wide'>My Link</h3>
+                <h2 className='text-2xl font-bold md:text-4xl mt-8'>User Dashboard</h2>
+                <h3 className='font-semibold text-md mt-5 tracking-wide'>My Username</h3>
                 <div className="flex items-center w-full justify-between">
-                    <input type='text' className="w-full break-all border border-slate-800 grow px-3 py-1.5 border-r-0 rounded-md rounded-r-none" value={profileUrl || "Profile URL not ready"} disabled />
+                    <input type='text' className="w-full break-all border border-slate-800 grow px-3 py-1.5 border-r-0 rounded-md rounded-r-none" value={username || "Cannot fetch the username right now"} disabled />
                     <button
                         onClick={copyToClipboard}
                         className="px-3 py-1.5 bg-slate-800 border border-slate-800 border-l-0 rounded-md rounded-l-none text-white cursor-pointer tracking-wide"
@@ -137,11 +135,12 @@ const Dashboard = () => {
                             checked={acceptMessages}
                             onCheckedChange={handleSwitchChange}
                             disabled={isSwitchLoading}
+                            className='cursor-pointer'
                         />
-                        <Label htmlFor="accept-message" className='tracking-wide'>Accept Messages</Label>
+                        <Label htmlFor="accept-message" className='tracking-wide cursor-pointer'>Accept Messages</Label>
                     </div>
 
-                    <button className='flex items-center gap-1' onClick={() => fetchMessages(true)}>
+                    <button className='flex items-center gap-1 cursor-pointer' onClick={() => fetchMessages(true)}>
                         <RefreshCw className={`${isLoading ? 'animate-spin' : ''} text-green-500`} /><span className='text-green-500 tracking-wide'>Refresh Messages</span>
                     </button>
                 </div>
@@ -149,6 +148,9 @@ const Dashboard = () => {
                 <Separator className="my-4" />
 
                 <div className='messages-container w-full p-3'>
+                    {
+                        isLoading && <Loader className='w-full mx-auto animate-spin'/>
+                    }
                     {
                         messages.length > 0 ?
                             (

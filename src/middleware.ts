@@ -10,10 +10,10 @@ export async function middleware(request: NextRequest) {
 
 		const authPages = ["/sign-in", "/sign-up", "/verify-code"];
 
-		const isAuthPage = authPages.some(page => pathname.startsWith(page))
+		const isAuthPage = authPages.some((page) => pathname.startsWith(page));
 
 		// Redirect unauthenticated user trying to access protected page
-		if (!token && pathname.startsWith("/dashboard")) {
+		if (!token && (pathname.startsWith("/dashboard") || pathname.startsWith('/ask'))) {
 			return NextResponse.redirect(new URL("/sign-in", request.url));
 		}
 
@@ -31,5 +31,12 @@ export async function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-	matcher: ["/sign-in", "/sign-up", "/", "/dashboard/:path*", "/verify-code/:path*"],
+	matcher: [
+		"/sign-in",
+		"/sign-up",
+		"/",
+		"/dashboard/:path*",
+		"/verify-code/:path*",
+		"/ask/:path*",
+	],
 };

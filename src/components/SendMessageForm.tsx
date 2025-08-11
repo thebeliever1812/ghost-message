@@ -36,6 +36,7 @@ const SendMessageForm: React.FC<SendMessageFormProps> = ({ username }) => {
         setIsSendingMessage(true)
         try {
             const response = await axios.post<ApiResponse>('/api/send-message', { username, messageContent: data.content })
+            form.reset({ content: '' })
             toast.success(response.data.message)
         } catch (error) {
             const axiosError = error as AxiosError<ApiResponse>
@@ -60,7 +61,7 @@ const SendMessageForm: React.FC<SendMessageFormProps> = ({ username }) => {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" disabled={ isSendingMessage }>
+                    <Button type="submit" disabled={isSendingMessage}>
                         {isSendingMessage && <Loader2 className="h-4 w-4 animate-spin" />}
                         {
                             isSendingMessage ? "Sending Message" : "Send"

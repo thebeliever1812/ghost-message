@@ -1,5 +1,5 @@
 import connectMongoDb from "@/lib/dbConnect";
-import { z } from "zod";
+import { success, z } from "zod";
 import UserModel from "@/models/User";
 import { usernameValidation } from "@/schemas/signUpSchema";
 import { NextRequest } from "next/server";
@@ -55,6 +55,55 @@ export async function GET(request: NextRequest) {
 			{
 				success: false,
 				message: "Error getting username",
+			},
+			{ status: 500 }
+		);
+	}
+}
+
+export async function POST(request: Request) {
+	try {
+		const { username } = await request.json();
+
+		const result = UsernameQuerySchema.safeParse({ username });
+		if (!result.success) {
+			return Response.json(
+				{
+					success: false,
+					message: result.error.issues[0].message,
+				},
+				{ status: 400 }
+			);
+		}
+
+		const { username: usernameAfterValidation } = result.data;
+
+		await connectMongoDb();
+
+		const user = await UserModel.findOne({ username: usernameAfterValidation });
+
+		if (!user) {
+			return Response.json(
+				{
+					success: false,
+					message: "User not found with this username",
+				},
+				{ status: 404 }
+			);
+		}
+
+		return Response.json(
+			{
+				success: true,
+				message: "User found",
+			},
+			{ status: 201 }
+		);
+	} catch (error) {
+		return Response.json(
+			{
+				success: false,
+				message: "Something went wrong, try again",
 			},
 			{ status: 500 }
 		);

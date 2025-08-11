@@ -1,17 +1,13 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Card,
-    CardAction,
     CardContent,
-    CardDescription,
     CardFooter,
-    CardHeader,
     CardTitle,
 } from "@/components/ui/card"
 import {
     AlertDialog,
-    AlertDialogAction,
     AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
@@ -25,6 +21,7 @@ import { Message } from '@/models/Message'
 import axios, { AxiosError } from 'axios'
 import { toast } from 'sonner'
 import { ApiResponse } from '@/types/ApiResponse'
+import { Loader2 } from 'lucide-react'
 
 interface MessageCardProps {
     message: Message;
@@ -32,7 +29,9 @@ interface MessageCardProps {
 }
 
 const MessageCard: React.FC<MessageCardProps> = ({ message, onMessageDelete }) => {
+    const [isDeleting, setIsDeleting] = useState(false)
     async function handleDelteMessage() {
+        setIsDeleting(true)
         try {
             const response = await axios.delete(`/api/delete-message/${message._id}`)
             toast.success(response.data.message)
@@ -40,12 +39,17 @@ const MessageCard: React.FC<MessageCardProps> = ({ message, onMessageDelete }) =
         } catch (error) {
             const axiosError = error as AxiosError<ApiResponse>
             toast.error(axiosError.response?.data.message)
+        } finally {
+            setIsDeleting(false)
         }
     }
 
     return (
         <div className='w-full mt-5'>
             <Card>
+                <CardTitle className='ml-5'>
+                    Message from Ghost
+                </CardTitle>
                 <CardContent>
                     <p className='text-lg md:text-2xl tracking-wide font-semibold'>{message.content}</p>
                 </CardContent>
@@ -69,7 +73,7 @@ const MessageCard: React.FC<MessageCardProps> = ({ message, onMessageDelete }) =
                             </AlertDialogHeader>
                             <AlertDialogFooter className=''>
                                 <AlertDialogCancel className='w-full sm:max-w-20'>Cancel</AlertDialogCancel>
-                                <Button variant="destructive" className='w-full sm:max-w-20' onClick={handleDelteMessage}>Delete</Button>
+                                <Button variant="destructive" className='w-full sm:max-w-20' onClick={handleDelteMessage} disabled={isDeleting}>{ isDeleting ? <Loader2 className='animate-spin'/> : "Delete"}</Button>
                             </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialog>

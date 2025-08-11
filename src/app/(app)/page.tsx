@@ -11,8 +11,63 @@ import {
 } from "@/components/ui/carousel"
 import messages from '@/messages.json'
 import Autoplay from 'embla-carousel-autoplay'
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { usernameValidation } from "@/schemas/signUpSchema";
+import z from "zod";
+import { useState } from "react";
+import axios, { AxiosError } from "axios";
+import { ApiResponse } from "@/types/ApiResponse";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 export default function Home() {
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const router = useRouter()
+
+  const UsernameSchema = z.object({
+    username: usernameValidation
+  })
+
+  const form = useForm<z.infer<typeof UsernameSchema>>({
+    resolver: zodResolver(UsernameSchema),
+    defaultValues: {
+      username: ''
+    }
+  })
+
+  async function onSubmit(data: z.infer<typeof UsernameSchema>) {
+    setLoading(true)
+    try {
+      const response = await axios.post("/api/check-username-unique", data)
+      router.push(`/ask/${data.username}`)
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>
+      toast.error(axiosError.response?.data.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <Container className="flex flex-col items-center">
@@ -24,7 +79,7 @@ export default function Home() {
       </section>
 
       <section className="mt-10 w-full flex justify-center max-w-64 sm:max-w-96 md:max-w-md">
-        <Carousel className="w-full" plugins={[Autoplay({ delay: 3000})]}>
+        <Carousel className="w-full" plugins={[Autoplay({ delay: 3000 })]}>
           <CarouselContent>
             {messages.map((message, index) => (
               <CarouselItem key={index}>
@@ -50,7 +105,43 @@ export default function Home() {
       </section>
 
       <section className="mt-5 tracking-wide">
-        <Button variant={'default'}>Send Anonymous Message</Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="default">Send Anonymous Message</Button>
+          </AlertDialogTrigger>
+
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-start">To: Username</AlertDialogTitle>
+            </AlertDialogHeader>
+
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="w-full space-y-2 flex flex-col md:flex-row gap-4 justify-between"
+              >
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormControl>
+                        <Input placeholder="Enter receiver's Username" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" disabled={loading}>{loading ? <Loader2 className="animate-spin" /> : 'Continue'}</Button>
+              </form>
+            </Form>
+
+            <AlertDialogFooter>
+              <AlertDialogCancel className="w-full">Cancel</AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
       </section>
     </Container>
   );
