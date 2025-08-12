@@ -23,10 +23,10 @@ interface SendMessageFormProps {
     username: string;
     messageText: string;
     setMessageText: (text: string) => void;
-
+    isAcceptingMessages: boolean
 }
 
-const SendMessageForm = forwardRef<HTMLInputElement, SendMessageFormProps>(({ username, messageText, setMessageText }, ref) => {
+const SendMessageForm = forwardRef<HTMLInputElement, SendMessageFormProps>(({ username, messageText, setMessageText, isAcceptingMessages }, ref) => {
     const [isSendingMessage, setIsSendingMessage] = useState<boolean>(false)
 
     const form = useForm<z.infer<typeof messageSchema>>({
@@ -74,7 +74,7 @@ const SendMessageForm = forwardRef<HTMLInputElement, SendMessageFormProps>(({ us
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" disabled={isSendingMessage}>
+                    <Button type="submit" disabled={isSendingMessage || !isAcceptingMessages}>
                         {isSendingMessage && <Loader2 className="h-4 w-4 animate-spin" />}
                         {
                             isSendingMessage ? "Sending Message" : "Send"

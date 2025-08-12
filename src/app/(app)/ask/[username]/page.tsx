@@ -1,11 +1,33 @@
-import { Container, SendMessageForm, SuggestMessages, URLInput } from '@/components'
+'use client'
+import { Container, SuggestMessages, URLInput } from '@/components'
+import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import React, { use } from 'react'
+import axios from 'axios'
+import { useParams } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
 
-const Ask = async ({ params }: {
-    params: Promise<{ username: string }>
-}) => {
-    const { username } = await params
+const Ask = () => {
+    const [isAcceptingMessages, setIsAcceptingMessages] = useState(false)
+    const params = useParams<{ username: string }>()
+
+    const { username } = params
+
+    const fetchIsUserAcceptingMessages = async () => {
+        try {
+            const response = await axios.get(`/api/accept-messages/${username}`)
+            console.log(response) 
+            setIsAcceptingMessages(response.data.acceptingMessages)
+        } catch (error) {
+            setIsAcceptingMessages(false)
+        }
+    }
+
+    useEffect(() => {
+        if (username) {
+            console.log("here")
+            fetchIsUserAcceptingMessages()
+        }
+    }, [username])
 
     return (
         <Container>
@@ -16,9 +38,17 @@ const Ask = async ({ params }: {
                 </div>
             </section>
 
+            <div className='mt-2 tracking-wide'>
+                {isAcceptingMessages ?
+                    <Badge variant="default" className='bg-[#0C642F]'>{`${username} accepting messages`}</Badge>
+                    :
+                    <Badge variant="destructive">{`${username} not accepting messages`}</Badge>
+                }</div>
+
+
             <Separator className="my-4" />
 
-            <SuggestMessages username={username} />
+            <SuggestMessages username={username} isAcceptingMessages={isAcceptingMessages} />
         </Container>
     )
 }

@@ -10,9 +10,10 @@ import SendMessageForm from './SendMessageForm'
 
 interface SendMessageFormProps {
     username: string
+    isAcceptingMessages: boolean
 }
 
-const SuggestMessages: React.FC<SendMessageFormProps> = ({ username }) => {
+const SuggestMessages: React.FC<SendMessageFormProps> = ({ username, isAcceptingMessages }) => {
     const [aiMessages, setAiMessages] = useState<string[]>([])
     const [isLoadingAiMessages, setIsLoadingAiMessages] = useState(false)
     const [messageText, setMessageText] = useState("");
@@ -68,7 +69,7 @@ const SuggestMessages: React.FC<SendMessageFormProps> = ({ username }) => {
                 </Button>
             </section>
 
-            <SendMessageForm username={username} messageText={messageText} setMessageText={setMessageText} ref={inputRef} />
+            <SendMessageForm username={username} messageText={messageText} setMessageText={setMessageText} isAcceptingMessages={isAcceptingMessages} ref={inputRef} />
         </>
     )
 }
