@@ -5,7 +5,8 @@ import connectMongoDb from "@/lib/dbConnect";
 import UserModel from "@/models/User";
 
 interface MyUser {
-	id: string;
+	id: string; // Required by NextAuth
+	_id: string;
 	username: string;
 	isVerified: boolean;
 	isAcceptingMessages: boolean;
@@ -61,7 +62,8 @@ export const authOptions: NextAuthOptions = {
 					}
 
 					return {
-						id: String(user._id), // keep for your own use
+						id: String(user._id),
+						_id: String(user._id), // keep for your own use
 						username: user.username,
 						isVerified: user.isVerified,
 						isAcceptingMessages: user.isAcceptingMessage,
@@ -78,7 +80,7 @@ export const authOptions: NextAuthOptions = {
 	callbacks: {
 		async jwt({ token, user }) {
 			if (user) {
-				token._id = user.id;
+				token._id = user._id;
 				token.username = user.username;
 				token.isVerified = user.isVerified;
 				token.isAcceptingMessages = user.isAcceptingMessages;
@@ -87,7 +89,7 @@ export const authOptions: NextAuthOptions = {
 		},
 		async session({ session, token }) {
 			if (session.user) {
-				session.user.id = token.id;
+				session.user._id = token._id;
 				session.user.username = token.username;
 				session.user.isVerified = token.isVerified;
 				session.user.isAcceptingMessages = token.isAcceptingMessages;

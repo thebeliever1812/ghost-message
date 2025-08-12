@@ -44,7 +44,7 @@ export async function DELETE(
 
 		await UserModel.findOneAndUpdate(
 			{
-				_id: user.id,
+				_id: user._id,
 				messages: messageId,
 			},
 			{ $pull: { messages: messageId } }

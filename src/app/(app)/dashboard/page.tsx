@@ -42,7 +42,10 @@ const Dashboard = () => {
     }
 
     const form = useForm<z.infer<typeof acceptMessageSchema>>({
-        resolver: zodResolver(acceptMessageSchema)
+        resolver: zodResolver(acceptMessageSchema),
+        defaultValues: {
+            acceptMessages: false
+        }
     })
 
     const { register, watch, setValue } = form
@@ -82,6 +85,7 @@ const Dashboard = () => {
 
     const handleSwitchChange = async () => {
         try {
+            console.log("Acc msgs : ",acceptMessages)
             const response = await axios.post("/api/accept-messages", {
                 acceptMessages: !acceptMessages
             })

@@ -8,6 +8,7 @@ export async function POST(request: Request) {
 	try {
 		const session = await getServerSession(authOptions);
 		const user = session?.user as User;
+		console.log("User:",user)
 
 		if (!session || !session.user) {
 			return Response.json(
@@ -19,8 +20,8 @@ export async function POST(request: Request) {
 			);
 		}
 		await connectMongoDb();
-
-		const userId = user.id;
+		const userId = user._id;
+		console.log(userId)
 		const { acceptMessages: isUserAcceptingMessages } = await request.json();
 
 		const result = acceptMessageSchema.safeParse({
@@ -34,14 +35,16 @@ export async function POST(request: Request) {
 			});
 		}
 
-		console.log("Result.data: ",result.data)
+		console.log("Result.data: ", result.data);
 		const { acceptMessages } = result.data;
 
 		const updatedUser = await UserModel.findByIdAndUpdate(
-			userId,
+			userId ,
 			{ isAcceptingMessage: acceptMessages },
 			{ new: true }
 		);
+
+		console.log(updatedUser)
 
 		if (!updatedUser) {
 			return Response.json(

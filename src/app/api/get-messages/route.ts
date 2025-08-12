@@ -21,7 +21,7 @@ export async function GET() {
 
 		await connectMongoDb();
 
-		const userId = new mongoose.Types.ObjectId(sessionUser.id);
+		const userId = new mongoose.Types.ObjectId(sessionUser._id);
 
 		const messages = await UserModel.aggregate([
 			{ $match: { _id: userId } },
