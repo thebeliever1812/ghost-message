@@ -23,8 +23,7 @@ export async function middleware(request: NextRequest) {
 		}
 
 		return NextResponse.next();
-	} catch (error) {
-		console.log("Error in middleware:", error);
+	} catch {
 		return NextResponse.next();
 	}
 }

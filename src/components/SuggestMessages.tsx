@@ -28,8 +28,7 @@ const SuggestMessages: React.FC<SendMessageFormProps> = ({ username, isAccepting
             const requiredMessages = messageData?.split('||')
             setAiMessages([])
             setAiMessages(requiredMessages || [])
-        } catch (error) {
-            console.log(error)
+        } catch {
         } finally {
             setIsLoadingAiMessages(false)
         }

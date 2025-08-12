@@ -5,7 +5,6 @@ let isConnected = false;
 
 async function connectMongoDb(): Promise<void> {
 	if (isConnected) {
-		console.log("MongoDb already connected");
 		return;
 	}
 
@@ -17,9 +16,7 @@ async function connectMongoDb(): Promise<void> {
 			}
 		);
 		isConnected = !!connection.connections[0].readyState;
-		console.log("MongoDb connected");
-	} catch (error) {
-		console.log("Error connecting MongoDb:", error);
+	} catch {
 		exit(1);
 	}
 }

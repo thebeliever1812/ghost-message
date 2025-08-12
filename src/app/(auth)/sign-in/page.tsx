@@ -36,7 +36,6 @@ const Signin = () => {
   async function onSubmit(data: z.infer<typeof signInSchema>) {
     setIsSubmitting(true)
     try {
-      console.log("I am here")
       const result = await signIn('credentials', {
         redirect: false,
         identifier: data.email,

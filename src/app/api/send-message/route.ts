@@ -31,7 +31,6 @@ export async function POST(request: Request) {
 		}
 
 		const result = messageSchema.safeParse({ content: messageContent });
-		console.log(result)
 
 		if (!result.success) {
 			return Response.json({
@@ -56,8 +55,7 @@ export async function POST(request: Request) {
 			},
 			{ status: 200 }
 		);
-	} catch (error) {
-		console.log(error)
+	} catch {
 		return Response.json(
 			{
 				success: false,

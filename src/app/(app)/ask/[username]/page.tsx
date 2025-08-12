@@ -16,14 +16,12 @@ const Ask = () => {
         const fetchIsUserAcceptingMessages = async () => {
             try {
                 const response = await axios.get(`/api/accept-messages/${username}`)
-                console.log(response)
                 setIsAcceptingMessages(response.data.acceptingMessages)
             } catch {
                 setIsAcceptingMessages(false)
             }
         }
         if (username) {
-            console.log("here")
             fetchIsUserAcceptingMessages()
         }
     }, [username])

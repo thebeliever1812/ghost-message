@@ -85,7 +85,6 @@ const Dashboard = () => {
 
     const handleSwitchChange = async () => {
         try {
-            console.log("Acc msgs : ",acceptMessages)
             const response = await axios.post("/api/accept-messages", {
                 acceptMessages: !acceptMessages
             })
