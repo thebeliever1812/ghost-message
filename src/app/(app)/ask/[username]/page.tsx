@@ -18,9 +18,7 @@ const Ask = async ({ params }: {
 
             <Separator className="my-4" />
 
-            <SuggestMessages />
-
-            <SendMessageForm username={username } />
+            <SuggestMessages username={username} />
         </Container>
     )
 }

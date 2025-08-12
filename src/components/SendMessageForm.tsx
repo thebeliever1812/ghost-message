@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState, forwardRef } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -18,11 +18,15 @@ import z from 'zod'
 import { toast } from 'sonner'
 import { ApiResponse } from '@/types/ApiResponse'
 
+
 interface SendMessageFormProps {
-    username: string
+    username: string;
+    messageText: string;
+    setMessageText: (text: string) => void;
+
 }
 
-const SendMessageForm: React.FC<SendMessageFormProps> = ({ username }) => {
+const SendMessageForm = forwardRef<HTMLInputElement, SendMessageFormProps>(({ username, messageText, setMessageText }, ref) => {
     const [isSendingMessage, setIsSendingMessage] = useState<boolean>(false)
 
     const form = useForm<z.infer<typeof messageSchema>>({
@@ -32,11 +36,20 @@ const SendMessageForm: React.FC<SendMessageFormProps> = ({ username }) => {
         }
     })
 
+    const { setValue } = form
+
+    useEffect(() => {
+        if (messageText) {
+            setValue('content', messageText, { shouldValidate: true })
+        }
+    }, [messageText])
+
     const onSubmit = async (data: z.infer<typeof messageSchema>) => {
         setIsSendingMessage(true)
         try {
             const response = await axios.post<ApiResponse>('/api/send-message', { username, messageContent: data.content })
             form.reset({ content: '' })
+            setMessageText('')
             toast.success(response.data.message)
         } catch (error) {
             const axiosError = error as AxiosError<ApiResponse>
@@ -55,7 +68,7 @@ const SendMessageForm: React.FC<SendMessageFormProps> = ({ username }) => {
                         render={({ field }) => (
                             <FormItem className='grow'>
                                 <FormControl>
-                                    <Input type='text' placeholder={`Enter message for ${username}`} {...field} />
+                                    <Input type='text' placeholder={`Enter message for ${username}`} {...field} ref={ref} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -71,6 +84,6 @@ const SendMessageForm: React.FC<SendMessageFormProps> = ({ username }) => {
             </Form>
         </section>
     )
-}
+})
 
-export default SendMessageForm
+export default SendMessageForm 
