@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 		}
 		await connectMongoDb();
 
-		const userId = user._id;
+		const userId = user.id;
 		const { acceptMessages: isUserAcceptingMessages } = await request.json();
 
 		const result = acceptMessageSchema.safeParse({
@@ -88,7 +88,7 @@ export async function GET() {
 		}
 		await connectMongoDb();
 
-		const userId = user._id;
+		const userId = user.id;
 
 		const userFound = await UserModel.findById(userId);
 
