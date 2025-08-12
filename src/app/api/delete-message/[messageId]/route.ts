@@ -44,7 +44,7 @@ export async function DELETE(
 
 		await UserModel.findOneAndUpdate(
 			{
-				_id: user._id,
+				_id: user.id,
 				messages: messageId,
 			},
 			{ $pull: { messages: messageId } }
@@ -57,7 +57,7 @@ export async function DELETE(
 			},
 			{ status: 200 }
 		);
-	} catch (error) {
+	} catch {
 		return Response.json(
 			{
 				success: false,

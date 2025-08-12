@@ -30,14 +30,13 @@ export async function GET() {
 			},
 			{ status: 200 }
 		);
-	} catch (error: any) {
-		console.error("AI generation error:", error);
+	} catch {
 		return Response.json(
 			{
 				success: false,
 				message: "Failed to generate suggestions",
 			},
-			{ status: error.statusCode }
+			{ status: 500 }
 		);
 	}
 }

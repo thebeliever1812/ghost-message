@@ -11,7 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import axios, { AxiosError } from 'axios'
 import { Loader, RefreshCw } from 'lucide-react'
 import { useSession } from 'next-auth/react'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import z from 'zod'
@@ -55,7 +55,6 @@ const Dashboard = () => {
             const response = await axios.get<ApiResponse>('/api/accept-messages')
             setValue('acceptMessages', response.data.isAcceptingMessages ?? false)
         } catch (error) {
-            const axiosError = error as AxiosError<ApiResponse>
         } finally {
             setIsSwitchLoading(false)
         }
@@ -70,7 +69,6 @@ const Dashboard = () => {
                 toast.info('Showing latest messages')
             }
         } catch (error) {
-            const axiosError = error as AxiosError<ApiResponse>
         } finally {
             setIsLoading(false)
         }
@@ -154,8 +152,8 @@ const Dashboard = () => {
                     {
                         messages.length > 0 ?
                             (
-                                messages.map((message: any,) =>
-                                    <div key={message._id}>
+                                messages.map((message: Message) =>
+                                    <div key={message._id as string}>
                                         <MessageCard message={message} onMessageDelete={handleDeleteMessage} />
                                     </div>
                                 )

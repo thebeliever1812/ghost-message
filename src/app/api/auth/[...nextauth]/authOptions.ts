@@ -1,8 +1,20 @@
-import { NextAuthOptions, User } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import connectMongoDb from "@/lib/dbConnect";
 import UserModel from "@/models/User";
+
+interface MyUser {
+	id: string;
+	username: string;
+	isVerified: boolean;
+	isAcceptingMessages: boolean;
+}
+
+interface Credentials {
+	identifier: string;
+	password: string;
+}
 
 export const authOptions: NextAuthOptions = {
 	providers: [
@@ -10,11 +22,13 @@ export const authOptions: NextAuthOptions = {
 			id: "credentials",
 			name: "Credentials",
 			credentials: {
-				email: { label: "Email", type: "email" },
+				identifier: { label: "Email or Username", type: "email" },
 				password: { label: "Password", type: "password" },
 			},
-			async authorize(credentials: any): Promise<any> {
-				if (!credentials) {
+			async authorize(
+				credentials: Credentials | undefined
+			): Promise<MyUser | null> {
+				if (!credentials?.identifier || !credentials?.password) {
 					throw new Error("Missing credentials");
 				}
 
@@ -47,7 +61,7 @@ export const authOptions: NextAuthOptions = {
 					}
 
 					return {
-						_id: String(user._id), // keep for your own use
+						id: String(user._id), // keep for your own use
 						username: user.username,
 						isVerified: user.isVerified,
 						isAcceptingMessages: user.isAcceptingMessage,
@@ -61,7 +75,7 @@ export const authOptions: NextAuthOptions = {
 	callbacks: {
 		async jwt({ token, user }) {
 			if (user) {
-				token._id = user._id;
+				token._id = user.id;
 				token.username = user.username;
 				token.isVerified = user.isVerified;
 				token.isAcceptingMessages = user.isAcceptingMessages;
@@ -70,7 +84,7 @@ export const authOptions: NextAuthOptions = {
 		},
 		async session({ session, token }) {
 			if (session.user) {
-				session.user._id = token._id;
+				session.user.id = token.id;
 				session.user.username = token.username;
 				session.user.isVerified = token.isVerified;
 				session.user.isAcceptingMessages = token.isAcceptingMessages;

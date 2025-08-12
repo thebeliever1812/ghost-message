@@ -27,7 +27,7 @@ const Ask = () => {
             console.log("here")
             fetchIsUserAcceptingMessages()
         }
-    }, [username])
+    }, [username, fetchIsUserAcceptingMessages])
 
     return (
         <Container>

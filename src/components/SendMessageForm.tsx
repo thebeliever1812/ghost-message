@@ -42,7 +42,7 @@ const SendMessageForm = forwardRef<HTMLInputElement, SendMessageFormProps>(({ us
         if (messageText) {
             setValue('content', messageText, { shouldValidate: true })
         }
-    }, [messageText])
+    }, [messageText, setValue])
 
     const onSubmit = async (data: z.infer<typeof messageSchema>) => {
         setIsSendingMessage(true)
@@ -74,6 +74,7 @@ const SendMessageForm = forwardRef<HTMLInputElement, SendMessageFormProps>(({ us
                             </FormItem>
                         )}
                     />
+                    
                     <Button type="submit" disabled={isSendingMessage || !isAcceptingMessages}>
                         {isSendingMessage && <Loader2 className="h-4 w-4 animate-spin" />}
                         {
@@ -85,5 +86,7 @@ const SendMessageForm = forwardRef<HTMLInputElement, SendMessageFormProps>(({ us
         </section>
     )
 })
+
+SendMessageForm.displayName = "SendMessageForm"; 
 
 export default SendMessageForm 

@@ -87,7 +87,7 @@ export async function POST(request: Request) {
 			{ success: true, message: result.message },
 			{ status: 200 }
 		);
-	} catch (error: any) {
+	} catch {
 		return Response.json(
 			{
 				success: false,

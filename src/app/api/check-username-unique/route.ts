@@ -1,5 +1,5 @@
 import connectMongoDb from "@/lib/dbConnect";
-import { success, z } from "zod";
+import { z } from "zod";
 import UserModel from "@/models/User";
 import { usernameValidation } from "@/schemas/signUpSchema";
 import { NextRequest } from "next/server";
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
 			},
 			{ status: 200 }
 		);
-	} catch (error) {
+	} catch {
 		return Response.json(
 			{
 				success: false,
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
 			},
 			{ status: 201 }
 		);
-	} catch (error) {
+	} catch {
 		return Response.json(
 			{
 				success: false,

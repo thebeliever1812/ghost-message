@@ -23,7 +23,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormMessage,
@@ -59,7 +58,7 @@ export default function Home() {
   async function onSubmit(data: z.infer<typeof UsernameSchema>) {
     setLoading(true)
     try {
-      const response = await axios.post("/api/check-username-unique", data)
+      await axios.post("/api/check-username-unique", data)
       router.push(`/ask/${data.username}`)
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
