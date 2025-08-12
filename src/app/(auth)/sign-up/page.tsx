@@ -66,7 +66,7 @@ const Signup = () => {
             }
         }
         checkUsernameAvailable()
-    }, [debouncedUsername])
+    }, [debouncedUsername, hasTypedUsername])
 
     async function onSubmit(data: z.infer<typeof signUpSchema>) {
         setIsSubmitting(true)

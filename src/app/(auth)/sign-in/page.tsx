@@ -50,7 +50,7 @@ const Signin = () => {
       setTimeout(() => {
         router.replace('/')
       }, 500)
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong! Try login again")
     } finally {
       setIsSubmitting(false)

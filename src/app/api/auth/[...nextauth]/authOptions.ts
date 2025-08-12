@@ -66,8 +66,11 @@ export const authOptions: NextAuthOptions = {
 						isVerified: user.isVerified,
 						isAcceptingMessages: user.isAcceptingMessage,
 					};
-				} catch (error: any) {
-					throw new Error(error.message);
+				} catch (error) {
+					if (error instanceof Error) {
+						throw new Error(error.message);
+					}
+					throw new Error("An unexpected error occurred");
 				}
 			},
 		}),

@@ -12,22 +12,21 @@ const Ask = () => {
 
     const { username } = params
 
-    const fetchIsUserAcceptingMessages = async () => {
-        try {
-            const response = await axios.get(`/api/accept-messages/${username}`)
-            console.log(response) 
-            setIsAcceptingMessages(response.data.acceptingMessages)
-        } catch (error) {
-            setIsAcceptingMessages(false)
-        }
-    }
-
     useEffect(() => {
+        const fetchIsUserAcceptingMessages = async () => {
+            try {
+                const response = await axios.get(`/api/accept-messages/${username}`)
+                console.log(response)
+                setIsAcceptingMessages(response.data.acceptingMessages)
+            } catch {
+                setIsAcceptingMessages(false)
+            }
+        }
         if (username) {
             console.log("here")
             fetchIsUserAcceptingMessages()
         }
-    }, [username, fetchIsUserAcceptingMessages])
+    }, [username])
 
     return (
         <Container>

@@ -54,7 +54,7 @@ const Dashboard = () => {
         try {
             const response = await axios.get<ApiResponse>('/api/accept-messages')
             setValue('acceptMessages', response.data.isAcceptingMessages ?? false)
-        } catch (error) {
+        } catch {
         } finally {
             setIsSwitchLoading(false)
         }
@@ -68,7 +68,7 @@ const Dashboard = () => {
             if (refresh) {
                 toast.info('Showing latest messages')
             }
-        } catch (error) {
+        } catch {
         } finally {
             setIsLoading(false)
         }
@@ -147,7 +147,7 @@ const Dashboard = () => {
 
                 <div className='messages-container w-full p-3'>
                     {
-                        isLoading && <Loader className='w-full mx-auto animate-spin'/>
+                        isLoading && <Loader className='w-full mx-auto animate-spin' />
                     }
                     {
                         messages.length > 0 ?
