@@ -75,7 +75,8 @@ Previously, I had only used Next.js for frontend purposes, but with Ghost Messag
 - MongoDB with Mongoose
 - NextAuth.js for authentication
 
-- **AI Integration:**
+**AI Integration:**
+
 - Google Gemini AI API for AI-powered message suggestions
 
 **Other Tools & Libraries**
