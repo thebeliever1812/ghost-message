@@ -1,10 +1,11 @@
 # Ghost Message
 
-**Ghost Message** is a secure, anonymous messaging platform that allows users to send and receive any type of  messages without revealing their identity. It offers a clean, modern UI, AI-powered message suggestions, and a smooth authentication flow — all built using a **full-stack Next.js** approach.
+**Ghost Message** is a secure, anonymous messaging platform that allows users to send and receive any type of messages without revealing their identity. It offers a clean, modern UI, AI-powered message suggestions, and a smooth authentication flow — all built using a **full-stack Next.js** approach.
 
 ---
 
 ## 🚀 Live Demo
+
 [Visit Ghost Message](https://ghost-message-eta.vercel.app)
 
 ---
@@ -38,14 +39,17 @@ Previously, I had only used Next.js for frontend purposes, but with Ghost Messag
 ## ⚙️ How It Works (Simplified)
 
 1. **User Authentication**
+
    - Users can sign up or log in via secure authentication.
    - Email verification is implemented to ensure valid accounts.
 
 2. **Profile & Status**
+
    - Each user has a unique public link (e.g., `/ask/username`) to receive anonymous messages.
    - Users can toggle "Accepting Messages" status.
 
 3. **Anonymous Messaging**
+
    - Anyone with the profile link can send a message.
    - Sender’s identity is not stored.
 
@@ -58,6 +62,7 @@ Previously, I had only used Next.js for frontend purposes, but with Ghost Messag
 ## 🛠 Tech Stack
 
 **Frontend:**
+
 - Next.js (App Router)
 - React
 - Tailwind CSS
@@ -65,20 +70,23 @@ Previously, I had only used Next.js for frontend purposes, but with Ghost Messag
 - TypeScript
 
 **Backend:**
+
 - Node.js (via Next.js API Routes)
 - MongoDB with Mongoose
 - NextAuth.js for authentication
 
-- **AI Integration:** 
+- **AI Integration:**
 - Google Gemini AI API for AI-powered message suggestions
 
 **Other Tools & Libraries**
+
 - Zod (validation)
-- bcrypt.js (password hashing) 
+- bcrypt.js (password hashing)
 - nodemailer (email verification)
 - React Hook Form (form handling)
 
 **Deployment:**
+
 - Vercel (frontend + backend) with MongoDB Atlas
 
 ---
@@ -114,21 +122,27 @@ ghost-message/
 Here are some screenshots of the application:
 
 ### Home Page
+
 ![Home Page](/public/ghost_message_home.png)
 
 ### Home Page (Enter username of reciever)
+
 ![Home Page (Enter username of reciever)](/public/ghost_message_enter_username.png)
 
 ### Ask (to another user)
+
 ![Ask (to another user)](/public/ghost_message_ask.png)
 
 ### Dashboard
+
 ![Dashboard](/public/ghost_message_dashboard.png)
 
 ### Sign Up
+
 ![Sign Up](/public/ghost_message_signup.png)
 
 ### Sign In
+
 ![Sign In](/public/ghost_message_signin.png)
 
 ---
@@ -146,7 +160,6 @@ Here are some screenshots of the application:
 ---
 
 ## 📦 Installation & Setup (Local Development)
-
 
 1. Clone the repository:
 
