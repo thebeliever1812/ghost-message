@@ -1,13 +1,4 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
-import "../globals.css";
-import AuthProvider from '@/context/AuthProvider'
-import { Toaster } from "@/components/ui/sonner"
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,16 +11,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <AuthProvider>
-        <body
-          className={`${geistSans.className} antialiased`}
-        >
-          <main>{children}</main>
-          <Toaster />
-        </body>
-      </AuthProvider>
-
-    </html>
+      <>
+        <main>{children}</main>
+      </>
   );
 }

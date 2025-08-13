@@ -1,14 +1,5 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
-import "../globals.css";
-import AuthProvider from '@/context/AuthProvider'
-import { Toaster } from "@/components/ui/sonner"
 import { Footer, Navbar } from "@/components";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,21 +12,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <AuthProvider>
-        <body
-          className={`${geistSans.className} antialiased flex flex-col min-h-screen`}
-        >
-          <header>
-            <Navbar />
-          </header>
-          <main className="grow">{children}</main>
-          <footer>
-            <Footer/>
-          </footer>
-          <Toaster />
-        </body>
-      </AuthProvider>
-    </html>
+    <div
+      className={`flex flex-col min-h-screen`}
+    >
+      <header>
+        <Navbar />
+      </header>
+      <main className="grow">{children}</main>
+      <footer>
+        <Footer />
+      </footer>
+    </div>
   );
 }
