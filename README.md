@@ -9,7 +9,7 @@
 
 ---
 
-## **Features**
+## 📌 Features
 
 - **🔐 Secure User Authentication** (Sign Up, Login) with secure password hashing.
 - **📩 Send & Receive Anonymous Messages** without revealing identity.
@@ -83,7 +83,7 @@ Previously, I had only used Next.js for frontend purposes, but with Ghost Messag
 
 ---
 
-## **Folder Structure**
+## 📂 Folder Structure
 
 ```
 ghost-message/
