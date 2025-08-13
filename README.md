@@ -111,6 +111,26 @@ ghost-message/
 
 ## 📸 Screenshots
 
+Here are some screenshots of the application:
+
+### Home Page
+![Home Page](/public/ghost_message_home.png)
+
+### Home Page (Enter username of reciever)
+![Home Page (Enter username of reciever)](/public/ghost_message_enter_username.png)
+
+### Ask (to another user)
+![Ask (to another user)](/public/ghost_message_ask.png)
+
+### Dashboard
+![Dashboard](/public/ghost_message_dashboard.png)
+
+### Sign Up
+![Sign Up](/public/ghost_message_signup.png)
+
+### Sign In
+![Sign In](/public/ghost_message_signin.png)
+
 ---
 
 ## 🌟 Extended Features & Highlights
